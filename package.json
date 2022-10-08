@@ -9,11 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "flex-js": "^1.0.5",
-    "jquery": "^3.6.1",
+    "@monaco-editor/react": "^4.4.6",
     "lexr": "^1.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0",
+    "react-toastify": "^9.0.8",
     "sass": "^1.55.0"
   },
   "devDependencies": {

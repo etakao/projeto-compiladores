@@ -1,121 +1,139 @@
 import { useState } from 'react';
+import Editor from '@monaco-editor/react';
+import { ToastContainer, toast } from 'react-toastify';
 import lexr from 'lexr';
 
-import './styles.scss';
+import { FiGithub, FiPlay, FiUpload } from 'react-icons/fi';
+
+import './global.scss';
+import 'react-toastify/dist/ReactToastify.css';
+
+// IMPORT ALL TOKENS, KEYWORDS, ERRORS, TYPES
+import { dictionary, tokens, keywords, errors, types } from './utils';
 
 function App() {
-  const [expression, setExpression] = useState('');
+  const [editorText, setEditorText] = useState("70 * 7");
   const [compiled, setCompiled] = useState([]);
-
-  let compiledReturn = [];
-
-  const dictionary = {
-    NUM: "NUMERO NATURAL",
-    FLOAT: "NUMERO REAL",
-    SUM: "OPERADOR SOMA",
-    MINUS: "OPERADOR SUBTRACAO",
-    MULTIPLY: "OPERADOR MULTIPLICACAO",
-    DIVIDE: "OPERADOR DIVISAO",
-    L_PAR: "SIMBOLO ABRE PARETESES",
-    R_PAR: "SIMBOLO FECHA PARETESES",
-    ERR: "CARACTERE INVALIDO",
-    NUM_ERR: "NUMERO INVALIDO"
-  }
 
   // INITIALIZES LEXR
   let tokenizer = new lexr.Tokenizer("");
 
-  // RULES
-  const tokens = {
-    NUM: /[0-9]+/,
-    FLOAT: /[0-9]+\.[0-9]+/,
-    SUM: /[+]/,
-    MINUS: /[-]/,
-    MULTIPLY: /[*]/,
-    DIVIDE: /[/]/,
-    L_PAR: /[(]/,
-    R_PAR: /[)]/,
-    WHITESPACE: /\s/,
-    NUM_ERR: /[.0-9]+|[0-9.]+/,
-    ERR: /[^\s]/
-  }
-
-  // ADD TOKENS
+  // ADD RULES
+  tokenizer.addTokenSet(keywords);
+  tokenizer.addTokenSet(types);
   tokenizer.addTokenSet(tokens);
-
-  // FUNCTIONS RESPONSE TO RULES
-  const functions = {
-    NUM: () => {
-      compiledReturn.push("NUMERO NATURAL")
-    },
-    FLOAT: () => {
-      compiledReturn.push("NUMERO REAL")
-    },
-    SUM: () => {
-      compiledReturn.push("OPERADOR SOMA")
-    },
-    MINUS: () => {
-      compiledReturn.push("OPERADOR SUBTRACAO")
-    },
-    MULTIPLY: () => {
-      compiledReturn.push("OPERADOR MULTIPLICACAO")
-    },
-    DIVIDE: () => {
-      compiledReturn.push("OPERADOR DIVISAO")
-    },
-    L_PAR: () => {
-      compiledReturn.push("SIMBOLO ABRE PARETESES")
-    },
-    R_PAR: () => {
-      compiledReturn.push("SIMBOLO FECHA PARETESES")
-    },
-    ERR: () => {
-      compiledReturn.push("CARACTERE INVALIDO")
-    }
-  }
-
-  // ADD FUNCTIONS
-  tokenizer.addFunctionSet(functions);
+  tokenizer.addTokenSet(errors);
 
   tokenizer.addIgnoreSet(["WHITESPACE"]);
 
-  function getLexical(event) {
-    event.preventDefault();
-
-    const response = tokenizer.tokenize(expression);
-
+  function getLexical() {
+    const response = tokenizer.tokenize(editorText);
     setCompiled(response);
   }
 
+  function handleEditorChange(value, event) {
+    console.log("Valor: ", value);
+    console.log("Evento: ", event);
+    setEditorText(value);
+  }
+
+  async function handleUpload(event) {
+    event.preventDefault();
+
+    const exampleFileReader = new FileReader();
+    exampleFileReader.onload = async (event) => { 
+      setEditorText(event.target.result);
+      toast.success("Arquivo carregado com sucesso!", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    };
+    exampleFileReader.readAsText(event.target.files[0]);
+  }
+  
   return (
-    <div className="App">
+    <div className="container">
       <header>
-        PROJETO DE COMPILADORES | ANALISADOR LEXICO
+        <h1>PROJETO DE COMPILADORES | ANALISADOR LEXICO</h1>
+
+        <a 
+          href="https://github.com/etakao/projeto-compiladores" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <FiGithub size={16} />
+          Veja o codigo aqui!
+        </a>
       </header>
 
-      <form onSubmit={getLexical}>
-        <input type="text" placeholder='Digite uma expressao' value={expression} onChange={e => setExpression(e.target.value)} autoFocus />
-        <button type="submit">COMPILAR</button>
-      </form>
+      <section className="content">
+        <Editor 
+          height="100%"
+          width="100%"
+          value={editorText}
+          theme="vs-dark"
+          onChange={handleEditorChange}
+        />
 
-      <table>
-        <thead>
-          <tr>
-            <th>TOKEN</th>
-            <th>VALOR</th>
-          </tr>
-        </thead>
-        <tbody>
-          {compiled.map((data, index) => {
-          return (
-            <tr key={index}>
-              <td>{dictionary[data.token]}</td>
-              <td>{data.value}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-      </table>
+        <div>
+          <div className="actions">
+            <button type="button" onClick={getLexical}>
+              <FiPlay size={16} />
+              COMPILAR
+            </button>
+
+            <label htmlFor="upload" className="upload" >
+              <FiUpload size={16} />
+              UPLOAD
+            </label>
+            <input 
+              id="upload" 
+              type="file" 
+              onChange={(event) => handleUpload(event)} 
+            />
+          </div>
+
+          <div className="table">
+            <table>
+              <thead>
+                <tr>
+                  <th>LEXEMA</th>
+                  <th>TOKEN</th>
+                </tr>
+              </thead>
+              <tbody>
+                {compiled.map((data, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{data.value}</td>
+                      <td>{dictionary[data.token]}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        toastStyle={{ backgroundColor: "#1E1E1E", color: "#D4D4D4" }}
+        limit={1}
+      />
     </div>
   )
 }
