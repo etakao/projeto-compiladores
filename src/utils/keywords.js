@@ -10,4 +10,5 @@ export const keywords = {
   DO: /(do)/,
   READ: /(read)/,
   WRITE: /(write)/,
+  VAR: /(var)/
 }
