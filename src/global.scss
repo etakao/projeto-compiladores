@@ -139,7 +139,7 @@ header {
   transition: all 0.4s;
 }
 
-.tokens-table {
+.aside-container {
   position: fixed;
   top: 77px;
   background-color: var(--background);
@@ -162,27 +162,32 @@ header {
       background-color: var(--foreground);
     }
 
-  .table {
+  .aside-content {
     max-width: 720px;
+
+    h3 {
+      margin-top: 20px;
+    }
 
     table {
       width: 100%;
+      margin-top: 10px;
+
+      th, td {
+        width: 100%;
+        word-break: break-all;
+    
+        border: 1px solid var(--foreground);
+        border-radius: 4px;
+        padding: 12px;
+        text-align: center;
+      }
+    
+      tr {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+      }
     }
-  }
-
-  th, td {
-    width: 100%;
-    word-break: break-all;
-
-    border: 1px solid var(--foreground);
-    border-radius: 4px;
-    padding: 12px;
-    text-align: center;
-  }
-
-  tr {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr;
   }
 }
 

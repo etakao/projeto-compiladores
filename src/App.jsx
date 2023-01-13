@@ -9,13 +9,27 @@ import './global.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
 // IMPORT ALL TOKENS, KEYWORDS, ERRORS, TYPES
-import { dictionary, tokens, keywords, errors, types } from './utils';
-import { identifyFunction } from './utils/Syntax/functions';
+import { dictionary, tokens, keywords, errors, types } from './utils/Lexical';
+import { useCompile } from './context/Compile';
+import { analyzer } from './utils/Syntax/analyzer';
 
 function App() {
-  const [editorText, setEditorText] = useState("int a,");
-  const [compiled, setCompiled] = useState([]);
+  // const { 
+  //   compiledCode,
+  //   updateCompiledCode,
+  //   variablesTable,
+  //   updateVariablesTable,
+  //   syntaxErrors,
+  //   updateSyntaxErrors,
+  //   semanticErrors, 
+  //   updateSemanticErrors 
+  // } = useCompile();
+
+  const [editorText, setEditorText] = useState("program teste,");
+  const [compiledCode, setCompiledCode] = useState([]);
+  const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
+  const [semanticErrors, setSemanticErrors] = useState([]);
   const [isAsideVisible, setIsAsideVisible] = useState(false);
 
   // INITIALIZES LEXR
@@ -30,34 +44,22 @@ function App() {
   tokenizer.addIgnoreSet(["WHITESPACE"]);
 
   function handleSubmit() {
-    // ARRUMAR
-    getLexical();
-  }
-
-  function getLexical() {
     let editorTextLines = editorText.split("\r\n");
-    let compiledLines = [];
-    let lineErrors = [];
-
-    let identifiers = [];
+    let compiledCodeLines = [];
 
     editorTextLines.forEach((line, lineIndex) => {
       const response = tokenizer.tokenize(line);
-      const errorList = identifyFunction(response, lineIndex + 1, identifiers);
-
-      if (errorList.length) {
-        Array.prototype.push.apply(lineErrors, errorList);
-      }
 
       response.forEach((column, columnIndex) => {
-        response[columnIndex] = { ...response[columnIndex], line: lineIndex + 1, column: columnIndex + 1 };
+        response[columnIndex] = { ...column, line: lineIndex + 1, column: columnIndex + 1 };
       });
       
-      Array.prototype.push.apply(compiledLines, response);
+      Array.prototype.push.apply(compiledCodeLines, response);
     });
 
-    setCompiled(compiledLines);
-    setSyntaxErrors(lineErrors);
+    // updateCompiledCode(compiledCodeLines);
+    setCompiledCode(compiledCodeLines);
+    analyzer(0, compiledCodeLines, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors);
   }
 
   function handleEditorChange(value, event) {
@@ -133,12 +135,15 @@ function App() {
         />
       </section>
 
-      <aside className={`tokens-table ${(isAsideVisible ? "visible" : "invisible")}`}>
+      <aside className={`aside-container ${(isAsideVisible ? "visible" : "invisible")}`}>
         <button type="button" onClick={() => setIsAsideVisible(false)}>
           <FiChevronsRight />
           OCULTAR TABELA
         </button>
-        <div className="table">
+
+        <div className="aside-content">
+          <h3>TOKENS</h3>
+
           <table>
             <thead>
               <tr>
@@ -149,7 +154,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {compiled.map((data, index) => {
+              {compiledCode.map((data, index) => {
                 return (
                   <tr key={index}>
                     <td>{data.value}</td>
@@ -162,27 +167,34 @@ function App() {
             </tbody>
           </table>
           
-              ERRORS
-              <table>
-                <thead>
-                  <tr>
-                    <th>ERRO</th>
-                    <th>LINHA</th>
-                    <th>COLUNA</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {syntaxErrors.map((data, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{data.error}</td>
-                        <td>{data.line}</td>
-                        <td>{data.column}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+          {/* <h3>ERROS</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>ERRO</th>
+                <th>LINHA</th>
+                <th>COLUNA</th>
+              </tr>
+            </thead>
+            <tbody>
+              {syntaxErrors.length ? (
+                syntaxErrors.map((data, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{data.error}</td>
+                      <td>{data.line}</td>
+                      <td>{data.column}</td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td>Nenhum erro encontrado.</td>
+                </tr>
+              )}
+            </tbody>
+          </table> */}
         </div>
       </aside>
       
