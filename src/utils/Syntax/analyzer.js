@@ -1,7 +1,16 @@
-import { identifier, program } from '.';
+import { 
+  begin,
+  conditional,
+  assign,
+  identifier,
+  looping,
+  procedure,
+  program,
+  readOrWrite, 
+ } from '.';
 //import { useCompile } from '../../context/Compile';
 
-export function analyzer(position, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors) {
+export function analyzer(lastPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors) {
 /*  const { 
     compiledCode,
     updateCompiledCode,
@@ -13,45 +22,124 @@ export function analyzer(position, compiledCode, variablesTable, setVariablesTab
     updateSemanticErrors
   } = useCompile();
 */
+let updatedLastPosition = lastPosition;
     
-  switch (compiledCode[position].token) {
+  switch (compiledCode[lastPosition].token) {
     case "PROGRAM":
-    program(position, 
+      program(
+        updatedLastPosition, 
         compiledCode, 
         variablesTable, 
         setVariablesTable, 
         syntaxErrors, 
         setSyntaxErrors, 
         semanticErrors, 
-        setSemanticErrors) 
-    // program(position);
+        setSemanticErrors
+      ); 
     break;
 
-    case "INT"|"BOOL":
-      //identifier( position);
+    case "INT"||"BOOL":
+      updatedLastPosition = identifier(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
     break;
 
     case "PROCEDURE":
-
+      updatedLastPosition = procedure(
+        updatedLastPosition+1, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
     break;
 
     case "BEGIN":
+      updatedLastPosition = begin(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
+    break;
 
+    case "IDENTIFIER":
+      updatedLastPosition = assign(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
     break;
 
     case "IF":
-
+      updatedLastPosition = conditional(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
     break;
 
     case "WHILE":
-
+      updatedLastPosition = looping(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
     break;
 
     case "READ" | "WRITE":
-      //readOrWrite(position);
+      updatedLastPosition = readOrWrite(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
     break;
 
     default:
+      console.log("DEU RUIM");
+      setSyntaxErrors([...syntaxErrors, { 
+        token: compiledCode[updatedLastPosition].token,
+        error: "ERRO DE SINTAXE",
+        line: compiledCode[updatedLastPosition].line,
+        column: compiledCode[updatedLastPosition].column,
+      }]);
+      updatedLastPosition++;
     break;
   }
+
+  return updatedLastPosition;
 }

@@ -1,56 +1,59 @@
-export function readOrWrite(line, columnIndex, lineNumber, identifiers){
-    errors=[]; /*{ token: string, error: string, line: number, column: number }*/ 
-  
-    let lineIndex = 0;
-        if(line[lineIndex].token !== 'OPEN_PARENTHESES'){
-            errors.push({ 
-                token: line[lineIndex].token,
+export function readOrWrite(firstPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors){
+    let newSyntaxErrors = []; /*{ token: string, error: string, line: number, column: number }*/ 
+    let lastPosition = firstPosition; 
+
+        if(compiledCode[lastPosition].token !== 'OPEN_PARENTHESES'){
+            newSyntaxErrors.push({ 
+                token: compiledCode[lastPosition].token,
                 error: "DEVERIA SER UM ABRE PARENTESES",
-                line: lineNumber,
-                column: columnIndex + lineIndex + 1
+                line: compiledCode[lastPosition].line,
+                column: compiledCode[lastPosition].column
             });
             
         }
-        lineIndex++;
-        while (lineIndex !== line[(line.length)-2]){
-            if ((lineIndex % 2) != 0){
-                if(line[lineIndex].token !== 'IDENTIFIER'){
-                    errors.push({ 
-                        token: line[lineIndex].token,
+        lastPosition++;
+        while (lastPosition !== compiledCode[(line.length)-2]){
+            if ((lastPosition % 2) != 0){
+                if(compiledCode[lastPosition].token !== 'IDENTIFIER'){
+                    newSyntaxErrors.push({ 
+                        token: compiledCode[lastPosition].token,
                         error: "DEVERIA SER UM IDENTIFICADOR",
-                        line: lineNumber,
-                        column: columnIndex + lineIndex + 1
+                        line: compiledCode[lastPosition].line ,
+                        column: compiledCode[lastPosition].column
                     });
                 } else {
-                    if(line[lineIndex].token !== 'COMMA'){
-                        errors.push({ 
-                            token: line[lineIndex].token,
+                    if(compiledCode[lastPosition].token !== 'COMMA'){
+                        newSyntaxErrors.push({ 
+                            token: compiledCode[lastPosition].token,
                             error: "DEVERIA SER UMA VÍRGULA",
-                            line: lineNumber,
-                            column: columnIndex + lineIndex + 1
+                            line: compiledCode[lastPosition].line ,
+                            column: compiledCode[lastPosition].column
                         });
                     }   
                 }
             }
-            lineIndex++;
+            lastPosition++;
         }
-        if(line[(line.length)-2].token !== 'CLOSE_PARENTHESIS'){
-            errors.push({ 
-                token: line[lineIndex].token,
+        if(compiledCode[(line.length)-2].token !== 'CLOSE_PARENTHESIS'){
+            newSyntaxErrors.push({ 
+                token: compiledCode[lastPosition].token,
                 error: "DEVERIA SER UM FECHA PARENTESES",
-                line: lineNumber,
-                column: columnIndex + lineIndex + 1
+                line: compiledCode[lastPosition].line ,
+                column: compiledCode[lastPosition].column
             });
         }
-        lineIndex++;
-        if(line[(line.length)-1].token !== 'SEMICOLON'){
-            errors.push({ 
-                token: line[lineIndex].token,
+        lastPosition++;
+        if(compiledCode[(line.length)-1].token !== 'SEMICOLON'){
+            newSyntaxErrors.push({ 
+                token: compiledCode[lastPosition].token,
                 error: "DEVERIA SER UM PONTO E VIRGULA",
-                line: lineNumber,
-                column: columnIndex + lineIndex
+                line: compiledCode[lastPosition].line ,
+                column: compiledCode[lastPosition].column
             });
         }
-      (!errors? console.log('passou sem erro'): console.log(errors));
-      return errors;
+    (!newSyntaxErrors? console.log('passou sem erro'): console.log(errors));
+     
+    setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
+
+    return lastPosition;
   }

@@ -145,7 +145,8 @@ header {
   background-color: var(--background);
   padding: 20px 40px;
   border-radius: 4px;
-  max-height: 750px;
+  max-height: calc(100vh - 60px);
+  //750px;
 
   overflow-y: auto;
 

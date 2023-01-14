@@ -25,7 +25,7 @@ function App() {
   //   updateSemanticErrors 
   // } = useCompile();
 
-  const [editorText, setEditorText] = useState("program teste,");
+  const [editorText, setEditorText] = useState("program teste; int a; begin end .");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
@@ -44,6 +44,10 @@ function App() {
   tokenizer.addIgnoreSet(["WHITESPACE"]);
 
   function handleSubmit() {
+    setVariablesTable([]);
+    setSyntaxErrors([]);
+    setSemanticErrors([]);
+
     let editorTextLines = editorText.split("\r\n");
     let compiledCodeLines = [];
 
@@ -59,7 +63,7 @@ function App() {
 
     // updateCompiledCode(compiledCodeLines);
     setCompiledCode(compiledCodeLines);
-    analyzer(0, compiledCodeLines, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors);
+    analyzer(0, compiledCodeLines, [], setVariablesTable, [], setSyntaxErrors, [], setSemanticErrors);
   }
 
   function handleEditorChange(value, event) {
@@ -167,7 +171,7 @@ function App() {
             </tbody>
           </table>
           
-          {/* <h3>ERROS</h3>
+          <h3>ERROS SINTÁTICOS</h3>
 
           <table>
             <thead>
@@ -194,7 +198,7 @@ function App() {
                 </tr>
               )}
             </tbody>
-          </table> */}
+          </table>
         </div>
       </aside>
       

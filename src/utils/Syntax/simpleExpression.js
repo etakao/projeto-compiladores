@@ -1,6 +1,5 @@
 // import { useCompile } from "../../context/Compile";
 import { analyzer } from "./analyzer";
-import {simpleExpression} from "./simpleExpression";
 
 export function expression(firstPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors) {
   let relation =['EQUAL', 'DIFFERENT', 'SMALLER', 'SMALLER_OR_EQUAL', 'BIGGER_OR_EQUAL','BIGGER'];
@@ -8,10 +7,7 @@ export function expression(firstPosition, compiledCode, variablesTable, setVaria
   let newSemanticErrors = [];
   let lastPosition = firstPosition + 1;
 
-  
-  if (){
-    if ()
-  }
+  if (compiledCode[lastPosition].token !== 'MINUS'){
     if (compiledCode[lastPosition].token){
 
     };
