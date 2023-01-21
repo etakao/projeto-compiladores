@@ -85,16 +85,5 @@ export function program(firstPosition, compiledCode, variablesTable, setVariable
     
       setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
     }
-
-    // if (compiledCode[lastPosition].token !== 'DOT') { //
-    //   newSyntaxErrors.push({ 
-    //     token: compiledCode[compiledCode.length-1].token,
-    //     error: "DEVERIA FECHAR COM UM PONTO FINAL",
-    //     line: compiledCode[compiledCode.length-1].line,
-    //     column: (compiledCode[compiledCode.length-1].column) + 1,
-    //   });
-    
-    //   setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
-    // }
   }
 }

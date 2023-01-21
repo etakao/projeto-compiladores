@@ -38,7 +38,20 @@ let updatedLastPosition = lastPosition;
       ); 
     break;
 
-    case "INT"||"BOOL":
+    case "INT":
+      updatedLastPosition = identifier(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
+    break;
+
+    case "BOOL":
       updatedLastPosition = identifier(
         updatedLastPosition, 
         compiledCode, 
@@ -116,7 +129,20 @@ let updatedLastPosition = lastPosition;
       );
     break;
 
-    case "READ" | "WRITE":
+    case "READ":
+      updatedLastPosition = readOrWrite(
+        updatedLastPosition, 
+        compiledCode, 
+        variablesTable, 
+        setVariablesTable, 
+        syntaxErrors, 
+        setSyntaxErrors, 
+        semanticErrors, 
+        setSemanticErrors
+      );
+    break;
+
+    case "WRITE":
       updatedLastPosition = readOrWrite(
         updatedLastPosition, 
         compiledCode, 

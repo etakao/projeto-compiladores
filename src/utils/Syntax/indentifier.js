@@ -38,7 +38,6 @@ export function identifier(firstPosition, compiledCode, variablesTable, setVaria
             column: compiledCode[lastPosition + index].column,
           });
         } else {
-          // variables.push(compiledCode[lastPosition + index]);
           setVariablesTable([...variablesTable, compiledCode[lastPosition + index]]);
         }
       }

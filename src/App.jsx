@@ -25,7 +25,9 @@ function App() {
   //   updateSemanticErrors 
   // } = useCompile();
 
-  const [editorText, setEditorText] = useState("program teste; int a; begin end .");
+  // program teste; int a; boolean b; procedure proc(var c : int); begin a := 12 if (a>12) end .
+
+  const [editorText, setEditorText] = useState("boolean b;");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
@@ -197,6 +199,31 @@ function App() {
                   <td>Nenhum erro encontrado.</td>
                 </tr>
               )}
+            </tbody>
+          </table>
+
+          <h3>TABELA DE VARIÁVEIS</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>LEXEMA</th>
+                <th>TOKEN</th>
+                <th>LINHA</th>
+                <th>COLUNA</th>
+              </tr>
+            </thead>
+            <tbody>
+              {variablesTable.map((data, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{data.value}</td>
+                    <td>{dictionary[data.token]}</td>
+                    <td>{data.line}</td>
+                    <td>{data.column}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

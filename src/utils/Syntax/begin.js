@@ -20,15 +20,17 @@ export function begin(firstPosition, compiledCode, variablesTable, setVariablesT
       lastPosition++;
     }
 
-    if (compiledCode[lastPosition].token !== 'END'){
+    if (lastPosition >= compiledCode.length) {
       newSyntaxErrors.push({ 
-        token: compiledCode[lastPosition-1].token,
+        token: compiledCode[compiledCode.length-1].token,
         error: "DEVERIA SER UM END",
-        line: compiledCode[lastPosition-1].line,
-        column: compiledCode[lastPosition-1].column,
+        line: compiledCode[compiledCode.length-1].line,
+        column: compiledCode[compiledCode.length-1].column,
       });
     
       setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
+
+      return compiledCode.length-1;
     }
   }
 
