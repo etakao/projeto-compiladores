@@ -1,5 +1,5 @@
 import { compareSyntaxToken } from "../Functions/compareSyntaxToken";
-import { dictionary } from "../Lexical";
+import {  verifyIdentifier } from "../Functions/verifyIdentifier";
 export function looping(firstPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors){
   let newSyntaxErrors = [];
   let newSemanticErrors = [];
@@ -14,14 +14,7 @@ export function looping(firstPosition, compiledCode, variablesTable, setVariable
        break;
       case 1:
         if(compareSyntaxToken(compiledCode[lastPosition],'IDENTIFIER',newSyntaxErrors)){
-          if(variablesTable.find(identify => { identify.value === compiledCode[lastPosition].value }) === undefined){
-+            newSemanticErrors.push({ 
-              token: compiledCode[lastPosition].token,
-              error: "IDENTIFICADOR NAO DECLARADO",
-              line: compiledCode[lastPosition].line,
-              column: compiledCode[lastPosition].column,
-            });
-          }
+          verifyIdentifier(compiledCode[lastPosition],newSyntaxErrors,newSemanticErrors,variablesTable)
           countInstruction++;
         }
         break;
