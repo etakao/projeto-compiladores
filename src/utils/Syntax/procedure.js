@@ -4,28 +4,24 @@ export function procedure(firstPosition, compiledCode, variablesTable, setVariab
 	let lastPosition = firstPosition; (lastPosition === 0? lastPosition = 1: lastPosition  );
 	let newSemanticErrors = [];
 	let newSyntaxErrors = [];
-	let countIntruction =0;
+	let countInstruction =0;
 	var isIdentifier = true;
-	while(compiledCode[lastPosition].token !== 'SEMICOLON'&& lastPosition< compiledCode.length){
-		switch(countIntruction){
+	while(compiledCode[lastPosition].token !== 'SEMICOLON'&& lastPosition< compiledCode.length-1){
+		switch(countInstruction){
 		case 0:
-		checkIdentifier(compiledCode[lastPosition],
-						syntaxErrors,
-						semanticErrors,
-						variablesTable,
-						setVariablesTable)
+		checkIdentifier(compiledCode[lastPosition],syntaxErrors,semanticErrors,variablesTable,setVariablesTable)
 		lastPosition++;
-		countIntruction++;
+		countInstruction++;
 		break;
 		case 1:
 			compareSyntaxToken(compiledCode[lastPosition],'OPEN_PARENTHESIS',newSyntaxErrors);
 		lastPosition++;
-		countIntruction++;
+		countInstruction++;
 		break;
 		case 2:
-			(compareSyntaxToken(compiledCode[lastPosition],'VAR',newSyntaxErrors)?countIntruction ++:countIntruction);
+			compareSyntaxToken(compiledCode[lastPosition],'VAR',newSyntaxErrors);
 			lastPosition++;
-			countIntruction++;	
+			countInstruction++;	
 		break;
 		case 3:
 			 
@@ -38,32 +34,32 @@ export function procedure(firstPosition, compiledCode, variablesTable, setVariab
 				isIdentifier = !isIdentifier;
 				lastPosition ++;
 			}// fim do while loop
-			countIntruction ++;
+			countInstruction ++;
 		break;
 		case 4:
 			if(isIdentifier){compareSyntaxToken(compiledCode[lastPosition-1],'COLON',newSyntaxErrors);}
 			else{compareSyntaxToken(compiledCode[lastPosition],'COLON',newSyntaxErrors);}
 			lastPosition++;
-			countIntruction ++;
+			countInstruction ++;
 		break;
 		case 5:
 			compareSyntaxToken(compiledCode[lastPosition],'TYPES',newSyntaxErrors);
 			lastPosition++;
-			countIntruction ++;
+			countInstruction ++;
 		break;
 		case 6:
 			compareSyntaxToken(compiledCode[lastPosition],'CLOSE_PARENTHESIS',newSyntaxErrors);
 			lastPosition++;
-			countIntruction ++;
+			countInstruction ++;
 		break;
 		case 7:
 			compareSyntaxToken(compiledCode[lastPosition],'SEMICOLON',newSyntaxErrors);
 			return lastPosition;
-		break;
+	
 		default: 
 		newSyntaxErrors.push({ 
 			token: compiledCodePosition.token,
-			error: `VARIAVEL EM EXCESSO`,
+			error: `VARIÁVEL EM EXCESSO`,
 			line: compiledCodePosition.line,
 			column:  compiledCodePosition.column
 		});
