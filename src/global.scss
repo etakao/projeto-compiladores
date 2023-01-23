@@ -130,7 +130,7 @@ header {
 }
 
 .invisible {
-  right: -800px;
+  right: -1920px;
   transition: all 0.4s;
 }
 
@@ -142,6 +142,7 @@ header {
 .aside-container {
   position: fixed;
   top: 77px;
+  width: 74%;
   background-color: var(--background);
   padding: 20px 40px;
   border-radius: 4px;
@@ -166,10 +167,6 @@ header {
   .aside-content {
     max-width: 720px;
 
-    h3 {
-      margin-top: 20px;
-    }
-
     table {
       width: 100%;
       margin-top: 10px;
@@ -190,6 +187,46 @@ header {
       }
     }
   }
+}
+
+.tables-tab {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tab {
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+  border-radius: 4px;
+}
+
+.active-tab {
+  background-color: rgba($color: #988BC7, $alpha: 0.6);
+}
+
+.inactive-tab {
+  background-color: rgba($color: #44475a, $alpha: 0.4);
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgba($color: #988BC7, $alpha: 0.6);
+  }
+}
+
+.active-table {
+  display: block;
+}
+
+.inactive-table {
+  display: none;
 }
 
 .Toastify__close-button.Toastify__close-button--light {

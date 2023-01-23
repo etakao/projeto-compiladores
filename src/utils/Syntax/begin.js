@@ -14,6 +14,8 @@ export function begin(firstPosition, compiledCode, variablesTable, setVariablesT
     });
     
     setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
+
+    return compiledCode.length-1;
   } else {
     while (compiledCode[lastPosition].token !== 'END' && lastPosition < compiledCode.length ) {
       lastPosition = analyzer(lastPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors);
@@ -31,8 +33,8 @@ export function begin(firstPosition, compiledCode, variablesTable, setVariablesT
       setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
 
       return compiledCode.length-1;
+    } else {
+      return lastPosition;
     }
   }
-
-  return lastPosition;
 }

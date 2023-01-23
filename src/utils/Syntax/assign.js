@@ -1,43 +1,33 @@
+import { expression } from "./expression";
+
 export function assign(firstPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors){
   let newSyntaxErrors = [];
   let newSemanticErrors = [];
   let lastPosition = firstPosition + 1;
 
-  while (lastPosition < compiledCode.length) {
-    // a := (b * c) + d;
-    switch (compiledCode[lastPosition].token) { 
-      case "OPEN_PARENTHESIS":
-        lastPosition++;
-
-        if (compiledCode[lastPosition].token !== "IDENTIFIER" || 
-        compiledCode[lastPosition].token !== "NUM" ||
-        compiledCode[lastPosition].token !== "BOOLEAN") {
-
-        }
-      break;
-
-      case "IDENTIFIER":
-        lastPosition++;
-
-        if (compiledCode[lastPosition].token )
-      break;
-
-      case "BOOLEAN":
-        lastPosition++;
-        
-        if (compiledCode[lastPosition].token !== "SEMICOLON") {
-          newSyntaxErrors.push({
-            token: compiledCode[lastPosition].token,
-            error: "DEVERIA SER UM PONTO E VÍRGULA",
-            line: compiledCode[lastPosition].line,
-            column: compiledCode[lastPosition].column
-          });
-        }
-      break;
-      
-      default:
-      break;
-    }
-    break;
+  if (compiledCode[lastPosition].token !== "COLON") {
+    newSyntaxErrors.push({ 
+      token: compiledCode[lastPosition].token,
+      error: "DEVERIA SER UM DOIS PONTOS",
+      line: compiledCode[lastPosition].line,
+      column: compiledCode[lastPosition].column,
+    });
+  } else {
+    lastPosition++;
   }
+
+  if (compiledCode[lastPosition].token !== "EQUAL") {
+    newSyntaxErrors.push({ 
+      token: compiledCode[lastPosition].token,
+      error: "DEVERIA SER UM IGUAL",
+      line: compiledCode[lastPosition].line,
+      column: compiledCode[lastPosition].column,
+    });
+  } else {
+    lastPosition++;
+  }
+
+  lastPosition = expression(lastPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors);
+  
+  return lastPosition;
 }

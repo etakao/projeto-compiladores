@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { ToastContainer, toast } from 'react-toastify';
 import lexr from 'lexr';
@@ -27,12 +27,14 @@ function App() {
 
   // program teste; int a; boolean b; procedure proc(var c : int); begin a := 12 if (a>12) end .
 
-  const [editorText, setEditorText] = useState("boolean b;");
+  const [editorText, setEditorText] = useState("a := 12;");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
   const [semanticErrors, setSemanticErrors] = useState([]);
-  const [isAsideVisible, setIsAsideVisible] = useState(false);
+  const [isAsideVisible, setIsAsideVisible] = useState(true);
+  const [activeTab, setActiveTab] = useState("lexical");
+
 
   // INITIALIZES LEXR
   let tokenizer = new lexr.Tokenizer("");
@@ -148,84 +150,114 @@ function App() {
         </button>
 
         <div className="aside-content">
-          <h3>TOKENS</h3>
+          <ul className="tables-tab">
+            <li 
+              className={`tab ${activeTab === "lexical" ? "active-tab" : "inactive-tab"}`} 
+              onClick={() => setActiveTab("lexical")}
+            >
+              <h3>TOKENS</h3>
+            </li>
 
-          <table>
-            <thead>
-              <tr>
-                <th>LEXEMA</th>
-                <th>TOKEN</th>
-                <th>LINHA</th>
-                <th>COLUNA</th>
-              </tr>
-            </thead>
-            <tbody>
-              {compiledCode.map((data, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{data.value}</td>
-                    <td>{dictionary[data.token]}</td>
-                    <td>{data.line}</td>
-                    <td>{data.column}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          
-          <h3>ERROS SINTÁTICOS</h3>
+            <li 
+              className={`tab ${activeTab === "syntax" ? "active-tab" : "inactive-tab"}`} 
+              onClick={() => setActiveTab("syntax")}
+            >
+              <h3>SINTAXE</h3>
+            </li>
 
-          <table>
-            <thead>
-              <tr>
-                <th>ERRO</th>
-                <th>LINHA</th>
-                <th>COLUNA</th>
-              </tr>
-            </thead>
-            <tbody>
-              {syntaxErrors.length ? (
-                syntaxErrors.map((data, index) => {
+            <li 
+              className={`tab ${activeTab === "semantic" ? "active-tab" : "inactive-tab"}`} 
+              onClick={() => setActiveTab("semantic")}
+            >
+              <h3>SEMÂNTICO</h3>
+            </li>
+
+            <li 
+              className={`tab ${activeTab === "variables" ? "active-tab" : "inactive-tab"}`} 
+              onClick={() => setActiveTab("variables")}
+            >
+              <h3>VARIÁVEIS</h3>
+            </li>
+          </ul>
+
+          <div className={activeTab === "lexical" ? "active-table" : "inactive-table"}>
+            <table>
+              <thead>
+                <tr>
+                  <th>LEXEMA</th>
+                  <th>TOKEN</th>
+                  <th>LINHA</th>
+                  <th>COLUNA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {compiledCode.map((data, index) => {
                   return (
                     <tr key={index}>
-                      <td>{data.error}</td>
+                      <td>{data.value}</td>
+                      <td>{dictionary[data.token]}</td>
                       <td>{data.line}</td>
                       <td>{data.column}</td>
                     </tr>
                   );
-                })
-              ) : (
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className={activeTab === "syntax" ? "active-table" : "inactive-table"}>
+            <table>
+              <thead>
                 <tr>
-                  <td>Nenhum erro encontrado.</td>
+                  <th>ERRO</th>
+                  <th>LINHA</th>
+                  <th>COLUNA</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-
-          <h3>TABELA DE VARIÁVEIS</h3>
-
-          <table>
-            <thead>
-              <tr>
-                <th>LEXEMA</th>
-                <th>TOKEN</th>
-                <th>LINHA</th>
-                <th>COLUNA</th>
-              </tr>
-            </thead>
-            <tbody>
-              {variablesTable.map((data, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{data.value}</td>
-                    <td>{dictionary[data.token]}</td>
-                    <td>{data.line}</td>
-                    <td>{data.column}</td>
+              </thead>
+              <tbody>
+                {syntaxErrors.length ? (
+                  syntaxErrors.map((data, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{data.error}</td>
+                        <td>{data.line}</td>
+                        <td>{data.column}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td>Nenhum erro encontrado.</td>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table> 
+          </div>
+
+          <div className={activeTab === "variables" ? "active-table" : "inactive-table"}>
+            <table>
+              <thead>
+                <tr>
+                  <th>LEXEMA</th>
+                  <th>TOKEN</th>
+                  <th>LINHA</th>
+                  <th>COLUNA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {variablesTable.map((data, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{data.value}</td>
+                      <td>{dictionary[data.token]}</td>
+                      <td>{data.line}</td>
+                      <td>{data.column}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </aside>
       
