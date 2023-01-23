@@ -71,11 +71,10 @@ export function program(firstPosition, compiledCode, variablesTable, setVariable
   } else {
     while (lastPosition < compiledCode.length && compiledCode[lastPosition].token !== 'DOT') {
       lastPosition = analyzer(lastPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors);
-      lastPosition++;
     }
 
-    // console.log(compiledCode[lastPosition].token)
-    if (lastPosition >= compiledCode.length) {
+     console.log("programDotLog",compiledCode[lastPosition-1].token)
+    if (lastPosition-1>= compiledCode.length) {
       newSyntaxErrors.push({ 
         token: compiledCode[compiledCode.length-1].token,
         error: "DEVERIA FECHAR COM UM PONTO FINAL",

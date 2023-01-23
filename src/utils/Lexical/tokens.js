@@ -1,5 +1,5 @@
 export const tokens = {
-  ASSIGN: /(:=)/,
+  // ASSIGN: /(:=)/,
   COMMENT_LINE: /([/]{2}[^\n]*\n)/,
   DOT: /(\.)/,
   NUM: /[0-9]{1,8}/,
