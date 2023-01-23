@@ -13,7 +13,7 @@ export function checkIdentifier(compiledCodePosition, syntaxErrors,semanticError
 		if(variablesTable.find(identify => { identify.value === compiledCodePosition.value })){
 			semanticErrors.push({ 
 				token: compiledCodePosition.token,
-				error: "JA EXISTE UM INDENTIFICADOR COM ESSE NOME",
+				error: "JA EXISTE UM IDENTIFICADOR COM ESSE NOME",
 				line: compiledCodePosition.line,
 				column: compiledCodePosition.column,
 			});
