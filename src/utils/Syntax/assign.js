@@ -12,9 +12,9 @@ export function assign(firstPosition, compiledCode, variablesTable, setVariables
       line: compiledCode[lastPosition].line,
       column: compiledCode[lastPosition].column,
     });
-  } else {
-    lastPosition++;
   }
+
+  lastPosition++;
 
   if (compiledCode[lastPosition].token !== "EQUAL") {
     newSyntaxErrors.push({ 
@@ -23,11 +23,15 @@ export function assign(firstPosition, compiledCode, variablesTable, setVariables
       line: compiledCode[lastPosition].line,
       column: compiledCode[lastPosition].column,
     });
-  } else {
-    lastPosition++;
   }
+
+  lastPosition++;
+
+  setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
+  setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
 
   lastPosition = expression(lastPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors);
   
+  console.log(compiledCode[lastPosition].token, compiledCode[lastPosition].column);
   return lastPosition;
 }

@@ -155,8 +155,21 @@ let updatedLastPosition = lastPosition;
       );
     break;
 
+    case "DOT":
+      if (updatedLastPosition >= compiledCode.lenght){
+        console.log("DEU RUIM");
+      setSyntaxErrors([...syntaxErrors, { 
+        token: compiledCode[updatedLastPosition].token,
+        error: "ERRO DE SINTAXE",
+        line: compiledCode[updatedLastPosition].line,
+        column: compiledCode[updatedLastPosition].column,
+      }]);
+      updatedLastPosition++;
+      }
+    break;
+
     default:
-      console.log("DEU RUIM");
+      console.log("analyserLog",compiledCode[lastPosition].token, compiledCode[lastPosition].column);
       setSyntaxErrors([...syntaxErrors, { 
         token: compiledCode[updatedLastPosition].token,
         error: "ERRO DE SINTAXE",

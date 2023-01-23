@@ -65,7 +65,7 @@ function App() {
       Array.prototype.push.apply(compiledCodeLines, response);
     });
 
-    // updateCompiledCode(compiledCodeLines);
+    //updateCompiledCode(compiledCodeLines);
     setCompiledCode(compiledCodeLines);
     analyzer(0, compiledCodeLines, [], setVariablesTable, [], setSyntaxErrors, [], setSemanticErrors);
   }

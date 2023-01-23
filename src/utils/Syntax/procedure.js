@@ -54,7 +54,7 @@ export function procedure(firstPosition, compiledCode, variablesTable, setVariab
 		break;
 		case 7:
 			compareSyntaxToken(compiledCode[lastPosition],'SEMICOLON',newSyntaxErrors);
-			return lastPosition;
+			return lastPosition++;
 	
 		default: 
 		newSyntaxErrors.push({ 
@@ -72,7 +72,8 @@ export function procedure(firstPosition, compiledCode, variablesTable, setVariab
 
 	setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
 	setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
-	console.log(" syntax errors: ", newSyntaxErrors, "semantic errors: ", newSemanticErrors);
+	console.log("procedureLog", compiledCode[lastPosition].token);
+	lastPosition++;
 	return lastPosition;
 }
 

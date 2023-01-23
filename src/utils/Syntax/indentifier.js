@@ -4,7 +4,7 @@ export function identifier(firstPosition, compiledCode, variablesTable, setVaria
   let lastPosition = firstPosition + 1;
 
   for (let index = 0; (index + lastPosition) < compiledCode.length; index++) {
-    if ((lastPosition + index) == compiledCode.length - 1) {
+    if ((lastPosition + index) === compiledCode.length - 1) {
       if (compiledCode[lastPosition + index].token !== 'SEMICOLON') {
         newSyntaxErrors.push({
           token: compiledCode[lastPosition + index].token,
@@ -46,7 +46,7 @@ export function identifier(firstPosition, compiledCode, variablesTable, setVaria
         setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
         setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
         
-        return lastPosition + index;
+        return lastPosition + index + 1;
       }
       else {
         if (compiledCode[lastPosition + index].token !== 'COMMA') {
