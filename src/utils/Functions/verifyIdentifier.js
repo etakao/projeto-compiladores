@@ -1,5 +1,7 @@
 export function verifyIdentifier(compiledCodePosition, syntaxErrors,semanticErrors,variablesTable){
-	if(compiledCodePosition.token !=='IDENTIFIER'){
+	let identifier = undefined;
+
+    if(compiledCodePosition.token !=='IDENTIFIER'){
 		syntaxErrors.push({ 
 			token: compiledCodePosition.token,
 			error: "DEVERIA SER UM IDENTIFICADOR",
@@ -9,7 +11,13 @@ export function verifyIdentifier(compiledCodePosition, syntaxErrors,semanticErro
        
 	}
 	else {
-    if(variablesTable.find(identify => { identify.value === compiledCodePosition.value })=== undefined){
+    for (let index = 0; index < variablesTable.length; index++) {
+      if (compiledCodePosition.value === variablesTable[index].value){
+        identifier = variablesTable[index]
+      }
+    }
+
+    if(identifier === undefined){
         semanticErrors.push({ 
             token: compiledCodePosition.token,
             error: "IDENTIFICADOR NAO DECLARADO ",
@@ -17,7 +25,6 @@ export function verifyIdentifier(compiledCodePosition, syntaxErrors,semanticErro
             column: compiledCodePosition.column,
         });
     }
-     
-    } 
-
+   
+  }
 }

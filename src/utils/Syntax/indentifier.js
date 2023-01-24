@@ -1,3 +1,5 @@
+import { checkIdentifier } from "../Functions/checkIdentifier";
+
 export function identifier(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
   let identifierType = compiledCode[firstPosition].token;
   let lastPosition = firstPosition + 1;
@@ -26,19 +28,7 @@ export function identifier(firstPosition, compiledCode, variablesTable, syntaxEr
         });
     
       } else {
-        if (variablesTable.find(identify => { identify.value === compiledCode[lastPosition + index].value })) {
-          semanticErrors.push({ 
-            token: compiledCode[lastPosition + index].token,
-            error: "JA EXISTE UM IDENTIFICADOR COM ESSE NOME",
-            line: compiledCode[lastPosition + index].line,
-            column: compiledCode[lastPosition + index].column,
-          });
-        } else {
-          variablesTable.push({
-            ...compiledCode[lastPosition + index],
-            type: identifierType
-          });
-        }
+        checkIdentifier(compiledCode[index + lastPosition], syntaxErrors, semanticErrors, variablesTable, identifierType);
       }
     } else {
       if (compiledCode[lastPosition + index].token === 'SEMICOLON') {

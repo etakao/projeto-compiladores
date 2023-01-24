@@ -13,16 +13,13 @@ import { dictionary, tokens, keywords, errors, types } from './utils/Lexical';
 import { analyzer } from './utils/Syntax/analyzer';
 
 function App() {
-  // program teste; int a; boolean b; procedure proc(var c : int); begin a := 12 if (a>12) end .
-
-  const [editorText, setEditorText] = useState("program prog; int a; a := 2+2; .");
+  const [editorText, setEditorText] = useState("program correto;\n int a;\n boolean b;\n begin\n a:=2;\n b:=true;\n read(a);\n write(b);\n if (a>1) then\n begin\n a:=20;\n b:=false;\n end\n end\n .");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
   const [semanticErrors, setSemanticErrors] = useState([]);
   const [isAsideVisible, setIsAsideVisible] = useState(true);
   const [activeTab, setActiveTab] = useState("lexical");
-
 
   // INITIALIZES LEXR
   let tokenizer = new lexr.Tokenizer("");

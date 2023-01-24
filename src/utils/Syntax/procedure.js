@@ -26,7 +26,6 @@ export function procedure(firstPosition, compiledCode, variablesTable, syntaxErr
 			case 3:
 				while(compiledCode[lastPosition].token === 'IDENTIFIER' || compiledCode[lastPosition].token === 'COMMA'){
 				if(isIdentifier) {
-					console.log( 'dentro do while',compiledCode[lastPosition]);
 					checkIdentifier(compiledCode[lastPosition], syntaxErrors,semanticErrors, variablesTable,'INT');
 					
 				}else{

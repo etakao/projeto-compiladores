@@ -1,17 +1,15 @@
 export function checkIdentifierType(index, compiledCode, variablesTable) {
-  let identifierToFind = compiledCode[index].value.toString();
+  let identifierToFind = compiledCode[index].value;
+  let identifier = undefined;
 
-  console.log(identifierToFind)
-
-  let identifier = variablesTable.find(variable => {
-    console.log(variable.value)
-    variable.value == identifierToFind
-  });
-
-  console.log(identifier);
+  for (let index = 0; index < variablesTable.length; index++) {
+    if (identifierToFind == variablesTable[index].value){
+      identifier = variablesTable[index]
+    }
+  }
 
   if (identifier === undefined) {
-    return ;
+    return false;
   }
 
   return identifier.type;

@@ -2,7 +2,7 @@ import { expressions } from "../Semantic/expressions";
 
 export function expression(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
   let lastPosition = firstPosition;
-
+  
   expressions(lastPosition, compiledCode, variablesTable, semanticErrors);
 
   let possibleVariables = ['IDENTIFIER', 'FLOAT', 'NUM', 'BOOL', 'TRUE', 'FALSE'];
@@ -18,19 +18,13 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
   }
   lastPosition++;
 
-  if (!relation.includes(compiledCode[lastPosition].token)) {
-    if (compiledCode[lastPosition].token === "SEMICOLON") {
-     return lastPosition;
-    } else {
-      syntaxErrors.push({ 
-        token: compiledCode[lastPosition].token,
-        error: "DEVERIA SER UM PONTO E VÍRGULA",
-        line: compiledCode[lastPosition].line,
-        column: compiledCode[lastPosition].column,
-      });
-    }
-    return lastPosition;  
+  if (compiledCode[lastPosition].token === "SEMICOLON" || compiledCode[lastPosition].token === "CLOSE_PARENTHESIS") {
+    return lastPosition;
   }
+
+  if (!relation.includes(compiledCode[lastPosition].token)) {
+    return lastPosition;
+  } 
   lastPosition++;
 
   if(!possibleVariables.includes(compiledCode[lastPosition].token)){

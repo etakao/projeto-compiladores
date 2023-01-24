@@ -13,8 +13,9 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
 
     return compiledCode.length-1;
   } else {
-    while (compiledCode[lastPosition].token !== 'END' && lastPosition < compiledCode.length ) {
+    while (compiledCode[lastPosition].token !== 'END' && lastPosition < compiledCode.length-1) {
       lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
+      console.log("logWhileBegin",compiledCode[lastPosition].token, compiledCode[lastPosition].line, compiledCode[lastPosition].column);
     }
 
     if (compiledCode[lastPosition].token !== 'END') {
@@ -27,17 +28,7 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
     }
 
     lastPosition++;
-    if (compiledCode[lastPosition].token !== 'SEMICOLON'&& compiledCode[lastPosition].token !== 'DOT') {
-      syntaxErrors.push({ 
-        token: compiledCode[lastPosition].token,
-        error: "DEVERIA SER UM PONTO E VÍRGULA",
-        line: compiledCode[lastPosition].line,
-        column: compiledCode[lastPosition].column,
-      });
-    }
-    if(compiledCode[lastPosition].token !== 'DOT'){
-      lastPosition++;
-    }
+    
     return lastPosition;
   }
 }

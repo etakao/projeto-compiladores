@@ -12,10 +12,10 @@ export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors
       column: compiledCode[lastPosition].column,
     });
   }
-  
   lastPosition++;
   
   assigns(firstPosition, lastPosition, compiledCode, variablesTable, semanticErrors);
+  
   lastPosition = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
   
   if (compiledCode[lastPosition].token !== "SEMICOLON") {
@@ -25,8 +25,11 @@ export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors
       line: compiledCode[lastPosition].line,
       column: compiledCode[lastPosition].column,
     });
-  }
-  lastPosition++;
 
+    return lastPosition;
+  }
+  
+  lastPosition++;
+  console.log("logAssign", compiledCode[lastPosition].token, compiledCode[lastPosition].line);
   return lastPosition;
 }

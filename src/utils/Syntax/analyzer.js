@@ -127,7 +127,7 @@ export function analyzer(lastPosition, compiledCode, variablesTable, syntaxError
     break;
 
     default:
-      console.log("analyserLog",compiledCode[lastPosition].token, compiledCode[lastPosition].column);
+      // console.log("analyserLog",compiledCode[lastPosition].token,compiledCode[lastPosition].line, compiledCode[lastPosition].column);
       syntaxErrors.push( { 
         token: compiledCode[updatedLastPosition].token,
         error: "ERRO DE SINTAXE",
@@ -137,6 +137,6 @@ export function analyzer(lastPosition, compiledCode, variablesTable, syntaxError
       updatedLastPosition++;
     break;
   }
-
+  
   return updatedLastPosition;
 }

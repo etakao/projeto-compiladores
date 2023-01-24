@@ -1,6 +1,7 @@
 import { checkIdentifierType } from "./checkIdentifierType";
 
 export function checkExpressionType(index, compiledCode, variablesTable) {
+  // true;
   let leftType = "";
   let rightType = "";
   let leftIndex = index;
@@ -22,27 +23,29 @@ export function checkExpressionType(index, compiledCode, variablesTable) {
     }
   }
 
-  if (compiledCode[relationType].token === "SEMICOLON") {
+  if (compiledCode[relationType].token === "SEMICOLON" || compiledCode[relationType].token === "CLOSE_PARENTHESIS") {
     return leftType;
   } else if (compiledCode[rightIndex].token === "IDENTIFIER") {
-    rightType = checkIdentifierType(compiledCode, rightIndex, variablesTable);
+    rightType = checkIdentifierType(rightIndex, compiledCode, variablesTable);
   } else {
     if (compiledCode[rightIndex].token === "NUM") {
       rightType = "INT";
     }
 
-    if (compiledCode[leftIndex].token === "TRUE" || compiledCode[leftIndex].token === "FALSE") {
+    if (compiledCode[rightIndex].token === "TRUE" || compiledCode[rightIndex].token === "FALSE") {
       rightType = "BOOL";
     }
   }
 
   if (boolRelations.includes(compiledCode[relationType].token)) {
-    return "BOOL";
+    if (leftType === rightType && rightType !== "BOOL") {
+      return "BOOL"
+    }
   } else if (intRelations.includes(compiledCode[relationType].token)) {
     if (leftType === "INT" && rightType === "INT") {
       return "INT";
     }
   }
 
-  return false;
+  return undefined;
 }

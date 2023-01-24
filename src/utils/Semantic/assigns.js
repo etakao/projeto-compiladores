@@ -5,7 +5,6 @@ export function assigns(firstPosition, lastPosition, compiledCode, variablesTabl
   let identifierType = checkIdentifierType(firstPosition, compiledCode, variablesTable);
   let expressionType = checkExpressionType(lastPosition, compiledCode, variablesTable);
   
-  console.log(identifierType, expressionType)
   if (identifierType !== expressionType) {
     semanticErrors.push({
       line: compiledCode[firstPosition].line,
