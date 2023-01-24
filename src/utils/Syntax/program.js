@@ -17,7 +17,7 @@ export function program(firstPosition, compiledCode, variablesTable, syntaxError
     if (variablesTable.find(identify => { identify.value === compiledCode[lastPosition].value })) {
       semanticErrors.push({ 
         token: compiledCode[lastPosition].token,
-        error: "JA EXISTE UM INDENTIFICADOR COM ESSE NOME",
+        error: "JA EXISTE UM IDENTIFICADOR COM ESSE NOME",
         line: compiledCode[lastPosition].line,
         column: compiledCode[lastPosition].column,
       });
@@ -52,12 +52,18 @@ export function program(firstPosition, compiledCode, variablesTable, syntaxError
       column: compiledCode[lastPosition - 1].column,
     });
   } else {
-    while (lastPosition < compiledCode.length && compiledCode[lastPosition].token !== 'DOT') {
+    while (lastPosition < compiledCode.length-1 && compiledCode[lastPosition].token !== 'DOT') {
       lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
     }
-
-     console.log("programDotLog",compiledCode[lastPosition-1].token)
-    if (lastPosition-1>= compiledCode.length) {
+    
+    if (lastPosition>= compiledCode.length) {
+      syntaxErrors.push({ 
+        token: compiledCode[compiledCode.length-1].token,
+        error: "DEVERIA FECHAR COM UM PONTO FINAL",
+        line: compiledCode[compiledCode.length-1].line,
+        column: compiledCode[compiledCode.length-1].column,
+      });
+    }else if(compiledCode[lastPosition].token  !== 'DOT'){
       syntaxErrors.push({ 
         token: compiledCode[compiledCode.length-1].token,
         error: "DEVERIA FECHAR COM UM PONTO FINAL",

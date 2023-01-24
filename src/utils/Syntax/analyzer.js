@@ -114,26 +114,26 @@ export function analyzer(lastPosition, compiledCode, variablesTable, syntaxError
     break;
 
     case "DOT":
-      if (updatedLastPosition >= compiledCode.lenght){
+      if (updatedLastPosition >= compiledCode.length){
         console.log("DEU RUIM");
-      setSyntaxErrors([...syntaxErrors, { 
+        syntaxErrors.push({ 
         token: compiledCode[updatedLastPosition].token,
         error: "ERRO DE SINTAXE",
         line: compiledCode[updatedLastPosition].line,
         column: compiledCode[updatedLastPosition].column,
-      }]);
+      });
       updatedLastPosition++;
       }
     break;
 
     default:
       console.log("analyserLog",compiledCode[lastPosition].token, compiledCode[lastPosition].column);
-      setSyntaxErrors([...syntaxErrors, { 
+      syntaxErrors.push( { 
         token: compiledCode[updatedLastPosition].token,
         error: "ERRO DE SINTAXE",
         line: compiledCode[updatedLastPosition].line,
         column: compiledCode[updatedLastPosition].column,
-      }]);
+      });
       updatedLastPosition++;
     break;
   }

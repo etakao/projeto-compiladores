@@ -4,7 +4,7 @@ export function checkExpressionType(index, compiledCode, variablesTable) {
   let leftType = "";
   let rightType = "";
   let leftIndex = index;
-  let rightIndex = index + 2;
+  let rightIndex = index + 2  ;
 
   if (compiledCode[leftIndex].token === "IDENTIFIER") {
     leftType = checkIdentifierType(compiledCode, leftIndex, variablesTable);

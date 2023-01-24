@@ -29,7 +29,7 @@ export function identifier(firstPosition, compiledCode, variablesTable, syntaxEr
         if (variablesTable.find(identify => { identify.value === compiledCode[lastPosition + index].value })) {
           semanticErrors.push({ 
             token: compiledCode[lastPosition + index].token,
-            error: "JA EXISTE UM INDENTIFICADOR COM ESSE NOME",
+            error: "JA EXISTE UM IDENTIFICADOR COM ESSE NOME",
             line: compiledCode[lastPosition + index].line,
             column: compiledCode[lastPosition + index].column,
           });
