@@ -3,7 +3,7 @@ import {  verifyIdentifier } from "../Functions/verifyIdentifier";
 import { analyzer } from "./analyzer";
 import { expression } from "./expression";
 
-export function looping(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors){
+export function looping(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   // let countInstruction =0;
   let lastPosition = firstPosition+1 ;
   // let verifyInstruction = ['ABRE PARENTESES', 'IDENTIFICADOR', 'EXPRESSÃO SIMPLES','IDENTIFICADOR OU VALOR','FECHA PARENTESES'];

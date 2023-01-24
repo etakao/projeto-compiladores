@@ -1,6 +1,6 @@
 import { expressions } from "../Semantic/expressions";
 
-export function expression(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
+export function expression(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let lastPosition = firstPosition;
   
   expressions(lastPosition, compiledCode, variablesTable, semanticErrors);

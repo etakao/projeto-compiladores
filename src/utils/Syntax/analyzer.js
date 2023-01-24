@@ -1,4 +1,4 @@
-import { 
+import {
   begin,
   conditional,
   assign,
@@ -6,137 +6,164 @@ import {
   looping,
   procedure,
   program,
-  readOrWrite, 
- } from '.';
+  readOrWrite,
+} from '.';
 
-export function analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
+export function analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let updatedLastPosition = lastPosition;
-    
+
   switch (compiledCode[lastPosition].token) {
     case "PROGRAM":
       program(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
-      ); 
-    break;
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
+      );
+      break;
 
     case "INT":
       updatedLastPosition = identifier(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "BOOL":
       updatedLastPosition = identifier(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "PROCEDURE":
       updatedLastPosition = procedure(
-        updatedLastPosition+1, 
+        updatedLastPosition + 1,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "BEGIN":
       updatedLastPosition = begin(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "IDENTIFIER":
       updatedLastPosition = assign(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "IF":
       updatedLastPosition = conditional(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "WHILE":
       updatedLastPosition = looping(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "READ":
       updatedLastPosition = readOrWrite(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
 
     case "WRITE":
       updatedLastPosition = readOrWrite(
-        updatedLastPosition, 
+        updatedLastPosition,
         compiledCode,
         variablesTable,
-        syntaxErrors, 
-        semanticErrors
+        syntaxErrors,
+        semanticErrors,
+        generatedCode,
+        dataTable
       );
-    break;
+      break;
+
+    case "COMMENT_LINE":
+      updatedLastPosition++;
+      break;
+
+    case "COMMENT_BLOCK":
+      updatedLastPosition++;
+      break;
 
     case "DOT":
-      if (updatedLastPosition >= compiledCode.length){
-        console.log("DEU RUIM");
-        syntaxErrors.push({ 
-        token: compiledCode[updatedLastPosition].token,
-        error: "ERRO DE SINTAXE",
-        line: compiledCode[updatedLastPosition].line,
-        column: compiledCode[updatedLastPosition].column,
-      });
-      updatedLastPosition++;
+      if (updatedLastPosition >= compiledCode.length) {
+        syntaxErrors.push({
+          token: compiledCode[updatedLastPosition].token,
+          error: "ERRO DE SINTAXE",
+          line: compiledCode[updatedLastPosition].line,
+          column: compiledCode[updatedLastPosition].column,
+        });
+        updatedLastPosition++;
       }
-    break;
+      break;
 
     default:
       // console.log("analyserLog",compiledCode[lastPosition].token,compiledCode[lastPosition].line, compiledCode[lastPosition].column);
-      syntaxErrors.push( { 
+      syntaxErrors.push({
         token: compiledCode[updatedLastPosition].token,
         error: "ERRO DE SINTAXE",
         line: compiledCode[updatedLastPosition].line,
         column: compiledCode[updatedLastPosition].column,
       });
       updatedLastPosition++;
-    break;
+      break;
   }
-  
+
   return updatedLastPosition;
 }

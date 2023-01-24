@@ -1,6 +1,6 @@
 import { analyzer } from "./analyzer";
 
-export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors){
+export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let lastPosition = firstPosition + 1;
 
   if (lastPosition >= compiledCode.length) {

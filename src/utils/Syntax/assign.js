@@ -1,7 +1,7 @@
 import { assigns } from "../Semantic/assigns";
 import { expression } from "./expression";
 
-export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors){
+export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable){
   let lastPosition = firstPosition + 1;
   
   if (compiledCode[lastPosition].token !== "ASSIGN") {

@@ -1,6 +1,6 @@
 import { analyzer } from "./analyzer";
 
-export function program(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
+export function program(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let lastPosition = firstPosition + 1;
 
   // console.log(compiledCode[lastPosition].token);
@@ -25,6 +25,11 @@ export function program(firstPosition, compiledCode, variablesTable, syntaxError
       variablesTable.push({
         ...compiledCode[lastPosition], 
         type: "PROGRAM" 
+      });
+
+      generatedCode.push({
+        line: generatedCode.length,
+        code: "INPP"
       });
     }
   }

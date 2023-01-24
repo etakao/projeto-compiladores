@@ -1,7 +1,7 @@
 import { compareSyntaxToken } from "../Functions/compareSyntaxToken";
 import { verifyIdentifier } from "../Functions/verifyIdentifier";
 
-export function readOrWrite(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors){ 
+export function readOrWrite(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable){ 
     let lastPosition = firstPosition + 1;
 	let countInstruction =0;
   let verifyInstruction = ['ABRE PARENTESES', 'IDENTIFICADOR','FECHA PARENTESES'];

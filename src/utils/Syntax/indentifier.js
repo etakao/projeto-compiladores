@@ -1,6 +1,6 @@
 import { checkIdentifier } from "../Functions/checkIdentifier";
 
-export function identifier(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
+export function identifier(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let identifierType = compiledCode[firstPosition].token;
   let lastPosition = firstPosition + 1;
 

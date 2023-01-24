@@ -2,7 +2,7 @@
 import { analyzer } from "./analyzer";
 import { expression } from "./expression";
 
-export function conditional(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
+export function conditional(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let lastPosition = firstPosition + 1;
   console.log("logConditional:", compiledCode[lastPosition].token);
 

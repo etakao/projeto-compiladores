@@ -1,7 +1,7 @@
 import { compareSyntaxToken } from "../Functions/compareSyntaxToken";
 import { checkIdentifier } from "../Functions/checkIdentifier";
 
-export function procedure(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors){
+export function procedure(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
 	let lastPosition = firstPosition; (lastPosition === 0? lastPosition = 1: lastPosition  );
 	let countInstruction = 0;
 	var isIdentifier = true;

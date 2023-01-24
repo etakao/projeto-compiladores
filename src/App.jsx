@@ -13,11 +13,13 @@ import { dictionary, tokens, keywords, errors, types } from './utils/Lexical';
 import { analyzer } from './utils/Syntax/analyzer';
 
 function App() {
-  const [editorText, setEditorText] = useState("program correto;\n int a;\n boolean b;\n begin\n a:=2;\n b:=true;\n read(a);\n write(b);\n if (a>1) then\n begin\n a:=20;\n b:=false;\n end\n end\n .");
+  const [editorText, setEditorText] = useState("program correto;\n int a, b, c;\n boolean d, e, f;\n int a, b, c;\n procedure proc(var a1 : int);\n int a, b, c;\n boolean d, e, f;\n begin\n a:=1;\n if (a<1) then\n a:=12;\n end\n begin\n a:=2;\n b:=10;\n c:=11;\n a:=b+c;\n d:=true;\n e:=false;\n f:=true;\n read(a);\n write(b);\n if (d) then\n begin\n a:=20;\n b:=10*c;\n c:=a/b;\n end\n while (a>1) do\n begin\n if (b>10) then\n b:=2;\n a:=a-1;\n end\n end.\n");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
   const [semanticErrors, setSemanticErrors] = useState([]);
+  const [generatedCode, setGeneratedCode] = useState([]);
+  const [dataTable, setDataTable] = useState([]);
   const [isAsideVisible, setIsAsideVisible] = useState(true);
   const [activeTab, setActiveTab] = useState("lexical");
 
@@ -38,6 +40,8 @@ function App() {
     let updatedVariablesTable = [];
     let updatedSyntaxErrors = [];
     let updatedSemanticErrors = [];
+    let updatedGeneratedCode = [];
+    let updatedDataTable = [];
 
     editorTextLines.forEach((line, lineIndex) => {
       const response = tokenizer.tokenize(line);
@@ -52,11 +56,13 @@ function App() {
     //updateCompiledCode(compiledCodeLines);
     setCompiledCode(compiledCodeLines);
     
-    analyzer(0, compiledCodeLines, updatedVariablesTable, updatedSyntaxErrors, updatedSemanticErrors);
+    analyzer(0, compiledCodeLines, updatedVariablesTable, updatedSyntaxErrors, updatedSemanticErrors, updatedGeneratedCode, updatedDataTable);
 
     setVariablesTable(updatedVariablesTable);
     setSyntaxErrors(updatedSyntaxErrors);
     setSemanticErrors(updatedSemanticErrors);
+    setGeneratedCode(updatedGeneratedCode);
+    setDataTable(updatedDataTable);
   }
 
   function handleEditorChange(value, event) {
