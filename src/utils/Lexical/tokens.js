@@ -1,6 +1,6 @@
 export const tokens = {
-  COMMENT_BLOCK:/({[^]*})/,
-  COMMENT_LINE: /([/]{2}[^\n]*\n)/,
+  COMMENT_BLOCK:/([{][^.]+[}])/,
+  COMMENT_LINE: /([/]{2}[^]*)/,
   ASSIGN: /(:=)/,
   DOT: /(\.)/,
   NUM: /[0-9]{1,8}/,
