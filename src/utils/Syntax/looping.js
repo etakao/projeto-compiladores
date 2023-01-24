@@ -19,7 +19,8 @@ export function looping(firstPosition, compiledCode, variablesTable, syntaxError
 
   lastPosition++;
 
-  lastPosition = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
+  let {expressionLastPosition, expressionValue} = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors,generatedCode, dataTable);
+  lastPosition = expressionLastPosition;
   
   if(compiledCode[lastPosition].token !== 'CLOSE_PARENTHESIS'){
     syntaxErrors.push({ 

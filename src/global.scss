@@ -130,7 +130,7 @@ header {
 }
 
 .invisible {
-  right: -50%;
+  right: -60%;
   transition: all 0.4s;
 }
 
@@ -142,7 +142,7 @@ header {
 .aside-container {
   position: fixed;
   top: 77px;
-  width: 50%;
+  width: 60%;
   background-color: var(--background);
   padding: 20px 40px;
   border-radius: 4px;
@@ -179,11 +179,6 @@ header {
         border-radius: 4px;
         padding: 12px;
         text-align: center;
-      }
-    
-      tr {
-        display: grid;
-        grid-template-columns: 1fr 2fr 1fr 1fr;
       }
     }
   }
@@ -227,6 +222,34 @@ header {
 
 .inactive-table {
   display: none;
+}
+
+.lexical-table {
+  tr {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr;
+  }
+}
+
+.syntax-table {
+  tr {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
+  }
+}
+
+.semantic-table {
+  tr {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+  }
+}
+
+.variables-table {
+  tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  }
 }
 
 .Toastify__close-button.Toastify__close-button--light {

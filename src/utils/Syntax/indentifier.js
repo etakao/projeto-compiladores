@@ -28,7 +28,7 @@ export function identifier(firstPosition, compiledCode, variablesTable, syntaxEr
         });
     
       } else {
-        checkIdentifier(compiledCode[index + lastPosition], syntaxErrors, semanticErrors, variablesTable, identifierType);
+        checkIdentifier(compiledCode[index + lastPosition], syntaxErrors, semanticErrors, variablesTable, identifierType, generatedCode, dataTable);
       }
     } else {
       if (compiledCode[lastPosition + index].token === 'SEMICOLON') {

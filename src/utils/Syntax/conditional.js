@@ -1,4 +1,3 @@
-// import { useCompile } from "../../context/Compile";
 import { analyzer } from "./analyzer";
 import { expression } from "./expression";
 
@@ -17,8 +16,9 @@ export function conditional(firstPosition, compiledCode, variablesTable, syntaxE
 
   lastPosition++;
 
-  lastPosition = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
-  
+  let {expressionLastPosition, expressionValue} = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable);
+  lastPosition = expressionLastPosition;
+
   if(compiledCode[lastPosition].token !== 'CLOSE_PARENTHESIS'){
     syntaxErrors.push({ 
       token: compiledCode[lastPosition].token,
@@ -41,11 +41,11 @@ export function conditional(firstPosition, compiledCode, variablesTable, syntaxE
 
   lastPosition++;
   
-  lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
+  lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors,generatedCode, dataTable);
 
   if(compiledCode[lastPosition].token === 'ELSE'){
     lastPosition++;
-    lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
+    lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors,generatedCode, dataTable);
   }
 
   return lastPosition;

@@ -1,3 +1,4 @@
+import { addVariableData } from "../Functions/addVariableData";
 import { assigns } from "../Semantic/assigns";
 import { expression } from "./expression";
 
@@ -16,8 +17,9 @@ export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors
   
   assigns(firstPosition, lastPosition, compiledCode, variablesTable, semanticErrors);
   
-  lastPosition = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
-  
+  let {expressionLastPosition, expressionValue} = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable);
+  lastPosition = expressionLastPosition;
+
   if (compiledCode[lastPosition].token !== "SEMICOLON") {
     syntaxErrors.push({ 
       token: compiledCode[lastPosition].token,
@@ -28,7 +30,9 @@ export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors
 
     return lastPosition;
   }
-  
+
+  addVariableData(firstPosition, compiledCode, expressionValue, variablesTable);
+
   lastPosition++;
   console.log("logAssign", compiledCode[lastPosition].token, compiledCode[lastPosition].line);
   return lastPosition;

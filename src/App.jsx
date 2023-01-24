@@ -12,8 +12,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { dictionary, tokens, keywords, errors, types } from './utils/Lexical';
 import { analyzer } from './utils/Syntax/analyzer';
 
+
 function App() {
-  const [editorText, setEditorText] = useState("program correto;\n int a, b, c;\n boolean d, e, f;\n int a, b, c;\n procedure proc(var a1 : int);\n int a, b, c;\n boolean d, e, f;\n begin\n a:=1;\n if (a<1) then\n a:=12;\n end\n begin\n a:=2;\n b:=10;\n c:=11;\n a:=b+c;\n d:=true;\n e:=false;\n f:=true;\n read(a);\n write(b);\n if (d) then\n begin\n a:=20;\n b:=10*c;\n c:=a/b;\n end\n while (a>1) do\n begin\n if (b>10) then\n b:=2;\n a:=a-1;\n end\n end.\n");
+  // "program correto;\n int a, b, c;\n boolean d, e, f;\n int a, b, c;\n procedure proc(var a1 : int);\n int a, b, c;\n boolean d, e, f;\n begin\n a:=1;\n if (a<1) then\n a:=12;\n end\n begin\n a:=2;\n b:=10;\n c:=11;\n a:=b+c;\n d:=true;\n e:=false;\n f:=true;\n read(a);\n write(b);\n if (d) then\n begin\n a:=20;\n b:=10*c;\n c:=a/b;\n end\n while (a>1) do\n begin\n if (b>10) then\n b:=2;\n a:=a-1;\n end\n end.\n"
+  const [editorText, setEditorText] = useState("program correto;\n int a, b, c;\n boolean d, e, f;\n begin\n a:=2;\n b:=10;\n c:=11;\n a:=b+c;\n d:=true;\n e:=false;\n f:=true;\n read(a);\n write(b);\n if (d) then\n begin\n a:=20;\n b:=10*c;\n c:=a/b;\n end\n while (a>1) do\n begin\n if (b>10) then\n b:=2;\n a:=a-1;\n end\n end.\n");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
@@ -175,7 +177,7 @@ function App() {
             </li>
           </ul>
 
-          <div className={activeTab === "lexical" ? "active-table" : "inactive-table"}>
+          <div className={activeTab === "lexical" ? "active-table lexical-table" : "inactive-table"}>
             <table>
               <thead>
                 <tr>
@@ -200,7 +202,7 @@ function App() {
             </table>
           </div>
 
-          <div className={activeTab === "syntax" ? "active-table" : "inactive-table"}>
+          <div className={activeTab === "syntax" ? "active-table syntax-table" : "inactive-table"}>
             <table>
               <thead>
                 <tr>
@@ -223,13 +225,15 @@ function App() {
                 ) : (
                   <tr>
                     <td>Nenhum erro encontrado.</td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 )}
               </tbody>
             </table> 
           </div>
 
-          <div className={activeTab === "semantic" ? "active-table" : "inactive-table"}>
+          <div className={activeTab === "semantic" ? "active-table semantic-table" : "inactive-table"}>
             <table>
               <thead>
                 <tr>
@@ -249,6 +253,7 @@ function App() {
                   })
                 ) : (
                   <tr>
+                    <td></td>
                     <td>Nenhum erro encontrado.</td>
                   </tr>
                 )}
@@ -256,24 +261,26 @@ function App() {
             </table> 
           </div>
 
-          <div className={activeTab === "variables" ? "active-table" : "inactive-table"}>
+          <div className={activeTab === "variables" ? "active-table variables-table" : "inactive-table"}>
             <table>
               <thead>
                 <tr>
                   <th>TIPO</th>
+                  <th>ID</th>
                   <th>VALOR</th>
                   <th>LINHA</th>
                   <th>COLUNA</th>
                 </tr>
               </thead>
               <tbody>
-                {variablesTable.map((data, index) => {
+                {variablesTable.map((variable, index) => {
                   return (
                     <tr key={index}>
-                      <td>{data.type}</td>
-                      <td>{data.value}</td>
-                      <td>{data.line}</td>
-                      <td>{data.column}</td>
+                      <td>{variable.type}</td>
+                      <td>{variable.value}</td>
+                      <td>{variable.data}</td>
+                      <td>{variable.line}</td>
+                      <td>{variable.column}</td>
                     </tr>
                   );
                 })}

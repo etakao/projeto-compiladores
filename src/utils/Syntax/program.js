@@ -58,7 +58,7 @@ export function program(firstPosition, compiledCode, variablesTable, syntaxError
     });
   } else {
     while (lastPosition < compiledCode.length-1 && compiledCode[lastPosition].token !== 'DOT') {
-      lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
+      lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors,generatedCode, dataTable);
     }
     
     if (lastPosition>= compiledCode.length) {

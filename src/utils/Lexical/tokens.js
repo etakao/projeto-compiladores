@@ -1,5 +1,6 @@
 export const tokens = {
-  COMMENT_BLOCK:/([{][^.]+[}])/,
+  OPEN_COMMENT:/({)/,
+  CLOSE_COMMENT:/(})/,
   COMMENT_LINE: /([/]{2}[^]*)/,
   ASSIGN: /(:=)/,
   DOT: /(\.)/,

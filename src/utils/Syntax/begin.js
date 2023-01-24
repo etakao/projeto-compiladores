@@ -14,7 +14,7 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
     return compiledCode.length-1;
   } else {
     while (compiledCode[lastPosition].token !== 'END' && lastPosition < compiledCode.length-1) {
-      lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
+      lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable);
       console.log("logWhileBegin",compiledCode[lastPosition].token, compiledCode[lastPosition].line, compiledCode[lastPosition].column);
     }
 

@@ -137,8 +137,11 @@ export function analyzer(lastPosition, compiledCode, variablesTable, syntaxError
       updatedLastPosition++;
       break;
 
-    case "COMMENT_BLOCK":
+    case "OPEN_COMMENT":
       updatedLastPosition++;
+      while (compiledCode[updatedLastPosition].token !== "CLOSE_COMMENT" && updatedLastPosition < compiledCode.length){
+        updatedLastPosition++;
+      }
       break;
 
     case "DOT":

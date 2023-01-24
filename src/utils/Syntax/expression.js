@@ -3,7 +3,7 @@ import { expressions } from "../Semantic/expressions";
 export function expression(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors, generatedCode, dataTable) {
   let lastPosition = firstPosition;
   
-  expressions(lastPosition, compiledCode, variablesTable, semanticErrors);
+  let expressionValue = expressions(lastPosition, compiledCode, variablesTable, semanticErrors, generatedCode, dataTable);
 
   let possibleVariables = ['IDENTIFIER', 'FLOAT', 'NUM', 'BOOL', 'TRUE', 'FALSE'];
   let relation = ['EQUAL', 'DIFFERENT', 'SMALLER', 'SMALLER_OR_EQUAL', 'BIGGER_OR_EQUAL','BIGGER', 'MINUS', 'SUM', 'DIVIDE', 'MULTIPLY'];
@@ -19,11 +19,17 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
   lastPosition++;
 
   if (compiledCode[lastPosition].token === "SEMICOLON" || compiledCode[lastPosition].token === "CLOSE_PARENTHESIS") {
-    return lastPosition;
+    return { 
+      expressionLastPosition: lastPosition,
+      expressionValue: expressionValue
+     };
   }
 
   if (!relation.includes(compiledCode[lastPosition].token)) {
-    return lastPosition;
+    return { 
+      expressionLastPosition: lastPosition,
+      expressionValue: expressionValue
+     };
   } 
   lastPosition++;
 
@@ -37,5 +43,8 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
   } 
   lastPosition++;
 
-  return lastPosition;
+  return { 
+    expressionLastPosition: lastPosition,
+    expressionValue: expressionValue
+   };
 }
