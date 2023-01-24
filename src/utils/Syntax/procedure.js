@@ -9,7 +9,7 @@ export function procedure(firstPosition, compiledCode, variablesTable, syntaxErr
 	while(compiledCode[lastPosition].token !== 'SEMICOLON'&& lastPosition< compiledCode.length-1){
 		switch(countInstruction){
 			case 0:
-				checkIdentifier(compiledCode[lastPosition],syntaxErrors,semanticErrors,variablesTable)
+				checkIdentifier(compiledCode[lastPosition],syntaxErrors,semanticErrors,variablesTable,'PROCEDURE');
 				lastPosition++;
 				countInstruction++;
 			break;
@@ -25,11 +25,13 @@ export function procedure(firstPosition, compiledCode, variablesTable, syntaxErr
 			break;
 			case 3:
 				while(compiledCode[lastPosition].token === 'IDENTIFIER' || compiledCode[lastPosition].token === 'COMMA'){
-				(isIdentifier ?
-					checkIdentifier(compiledCode[lastPosition], syntaxErrors,semanticErrors, variablesTable)
-				:
+				if(isIdentifier) {
+					console.log( 'dentro do while',compiledCode[lastPosition]);
+					checkIdentifier(compiledCode[lastPosition], syntaxErrors,semanticErrors, variablesTable,'INT');
+					
+				}else{
 					compareSyntaxToken(compiledCode[lastPosition],'COMMA',syntaxErrors)
-				);
+				}
 					isIdentifier = !isIdentifier;
 					lastPosition ++;
 				}// fim do while loop
@@ -67,8 +69,6 @@ export function procedure(firstPosition, compiledCode, variablesTable, syntaxErr
 		}
 	}
 	const a =compareSyntaxToken(compiledCode[lastPosition],'SEMICOLON',syntaxErrors);
-	
-	console.log("procedureLog", compiledCode[lastPosition].token);
 	lastPosition++;
 	return lastPosition;
 }
