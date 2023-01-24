@@ -4,10 +4,14 @@ export function checkExpressionType(index, compiledCode, variablesTable) {
   let leftType = "";
   let rightType = "";
   let leftIndex = index;
+  let relationType = index + 1;
   let rightIndex = index + 2;
 
+  let boolRelations = ['EQUAL', 'DIFFERENT', 'SMALLER', 'SMALLER_OR_EQUAL', 'BIGGER_OR_EQUAL','BIGGER'];
+  let intRelations = ['MINUS', 'SUM', 'DIVIDE', 'MULTIPLY'];
+
   if (compiledCode[leftIndex].token === "IDENTIFIER") {
-    leftType = checkIdentifierType(compiledCode, leftIndex, variablesTable);
+    leftType = checkIdentifierType(leftIndex, compiledCode, variablesTable);
   } else {
     if (compiledCode[leftIndex].token === "NUM") {
       leftType = "INT";
@@ -18,7 +22,9 @@ export function checkExpressionType(index, compiledCode, variablesTable) {
     }
   }
 
-  if (compiledCode[rightIndex].token === "IDENTIFIER") {
+  if (compiledCode[relationType].token === "SEMICOLON") {
+    return leftType;
+  } else if (compiledCode[rightIndex].token === "IDENTIFIER") {
     rightType = checkIdentifierType(compiledCode, rightIndex, variablesTable);
   } else {
     if (compiledCode[rightIndex].token === "NUM") {
@@ -30,7 +36,13 @@ export function checkExpressionType(index, compiledCode, variablesTable) {
     }
   }
 
-  if (leftType === rightType) {
-    return leftType;
-  } else return false;
+  if (boolRelations.includes(compiledCode[relationType].token)) {
+    return "BOOL";
+  } else if (intRelations.includes(compiledCode[relationType].token)) {
+    if (leftType === "INT" && rightType === "INT") {
+      return "INT";
+    }
+  }
+
+  return false;
 }

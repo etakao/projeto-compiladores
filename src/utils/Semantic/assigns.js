@@ -1,9 +1,9 @@
 import { checkExpressionType } from "../Functions/checkExpressionType";
 import { checkIdentifierType } from "../Functions/checkIdentifierType";
 
-export function assigns(firstPosition, lastPosition, variablesTable, semanticErrors) {
-  let identifierType = checkIdentifierType(firstPosition, variablesTable);
-  let expressionType = checkExpressionType(lastPosition, variablesTable);
+export function assigns(firstPosition, lastPosition, compiledCode, variablesTable, semanticErrors) {
+  let identifierType = checkIdentifierType(firstPosition, compiledCode, variablesTable);
+  let expressionType = checkExpressionType(lastPosition, compiledCode, variablesTable);
   
   console.log(identifierType, expressionType)
   if (identifierType !== expressionType) {

@@ -15,9 +15,18 @@ export function assign(firstPosition, compiledCode, variablesTable, syntaxErrors
   
   lastPosition++;
   
-  assigns(compiledCode[firstPosition], compiledCode[lastPosition], variablesTable, semanticErrors);
+  assigns(firstPosition, lastPosition, compiledCode, variablesTable, semanticErrors);
   lastPosition = expression(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
   
-  console.log(compiledCode[lastPosition].token, compiledCode[lastPosition].column);
+  if (compiledCode[lastPosition].token !== "SEMICOLON") {
+    syntaxErrors.push({ 
+      token: compiledCode[lastPosition].token,
+      error: "DEVERIA SER UM PONTO E VÍRGULA",
+      line: compiledCode[lastPosition].line,
+      column: compiledCode[lastPosition].column,
+    });
+  }
+  lastPosition++;
+
   return lastPosition;
 }

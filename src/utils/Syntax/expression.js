@@ -1,4 +1,3 @@
-// import { useCompile } from "../../context/Compile";
 import { expressions } from "../Semantic/expressions";
 
 export function expression(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
@@ -6,12 +5,11 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
 
   expressions(lastPosition, compiledCode, variablesTable, semanticErrors);
 
-  let possibleVariables = ['IDENTIFIER', 'FLOAT', 'NUM', 'BOOL'];
-  let relation = ['EQUAL', 'DIFFERENT', 'SMALLER', 'SMALLER_OR_EQUAL', 'BIGGER_OR_EQUAL','BIGGER'];
-  console.log("teste",compiledCode[lastPosition].token);
+  let possibleVariables = ['IDENTIFIER', 'FLOAT', 'NUM', 'BOOL', 'TRUE', 'FALSE'];
+  let relation = ['EQUAL', 'DIFFERENT', 'SMALLER', 'SMALLER_OR_EQUAL', 'BIGGER_OR_EQUAL','BIGGER', 'MINUS', 'SUM', 'DIVIDE', 'MULTIPLY'];
+
   if (!possibleVariables.includes(compiledCode[lastPosition].token)) {
-    console.log("entrou",compiledCode[lastPosition].token);
-    newSyntaxErrors.push({ 
+    syntaxErrors.push({ 
       token: compiledCode[lastPosition].token,
       error: "DEVERIA SER UM IDENTIFICADOR OU NÚMERO",
       line: compiledCode[lastPosition].line,
@@ -21,35 +19,29 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
   lastPosition++;
 
   if (!relation.includes(compiledCode[lastPosition].token)) {
-    console.log(compiledCode[lastPosition].token, compiledCode[lastPosition].column);
-    if (compiledCode[lastPosition].token !== "SEMICOLON") {
-      newSyntaxErrors.push({ 
+    if (compiledCode[lastPosition].token === "SEMICOLON") {
+     return lastPosition;
+    } else {
+      syntaxErrors.push({ 
         token: compiledCode[lastPosition].token,
         error: "DEVERIA SER UM PONTO E VÍRGULA",
         line: compiledCode[lastPosition].line,
         column: compiledCode[lastPosition].column,
       });
     }
-    lastPosition++;
-    setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
-    setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
     return lastPosition;  
   }
-
   lastPosition++;
 
   if(!possibleVariables.includes(compiledCode[lastPosition].token)){
-    newSyntaxErrors.push({ 
+    syntaxErrors.push({ 
       token: compiledCode[lastPosition].token,
-      error: "DEVERIA SER UM IDENTIFICADOR OU NÚMERO2",
+      error: "DEVERIA SER UM IDENTIFICADOR OU NÚMERO",
       line: compiledCode[lastPosition].line,
       column: compiledCode[lastPosition].column,
     });
   } 
   lastPosition++;
-
-  setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
-  setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
 
   return lastPosition;
 }

@@ -15,7 +15,7 @@ import { analyzer } from './utils/Syntax/analyzer';
 function App() {
   // program teste; int a; boolean b; procedure proc(var c : int); begin a := 12 if (a>12) end .
 
-  const [editorText, setEditorText] = useState("program prog; int a; a := false .");
+  const [editorText, setEditorText] = useState("program prog; int a; a := 2+2; .");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
