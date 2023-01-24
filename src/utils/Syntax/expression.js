@@ -11,7 +11,7 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
   console.log("teste",compiledCode[lastPosition].token);
   if (!possibleVariables.includes(compiledCode[lastPosition].token)) {
     console.log("entrou",compiledCode[lastPosition].token);
-    newSyntaxErrors.push({ 
+    syntaxErrors.push({ 
       token: compiledCode[lastPosition].token,
       error: "DEVERIA SER UM IDENTIFICADOR OU NÚMERO",
       line: compiledCode[lastPosition].line,
@@ -23,7 +23,7 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
   if (!relation.includes(compiledCode[lastPosition].token)) {
     console.log(compiledCode[lastPosition].token, compiledCode[lastPosition].column);
     if (compiledCode[lastPosition].token !== "SEMICOLON") {
-      newSyntaxErrors.push({ 
+      syntaxErrors.push({ 
         token: compiledCode[lastPosition].token,
         error: "DEVERIA SER UM PONTO E VÍRGULA",
         line: compiledCode[lastPosition].line,
@@ -31,15 +31,13 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
       });
     }
     lastPosition++;
-    setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
-    setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
     return lastPosition;  
   }
 
   lastPosition++;
 
   if(!possibleVariables.includes(compiledCode[lastPosition].token)){
-    newSyntaxErrors.push({ 
+    syntaxErrors.push({ 
       token: compiledCode[lastPosition].token,
       error: "DEVERIA SER UM IDENTIFICADOR OU NÚMERO2",
       line: compiledCode[lastPosition].line,
@@ -47,9 +45,6 @@ export function expression(firstPosition, compiledCode, variablesTable, syntaxEr
     });
   } 
   lastPosition++;
-
-  setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
-  setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
 
   return lastPosition;
 }
