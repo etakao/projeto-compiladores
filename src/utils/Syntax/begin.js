@@ -38,8 +38,10 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
         column: compiledCode[lastPosition].column,
       });
     }
-
-    lastPosition++;
+    if(compiledCode[lastPosition].token !== 'DOT'){
+      lastPosition++;
+    }
+    
 
     return lastPosition;
  
