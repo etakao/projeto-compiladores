@@ -1,4 +1,4 @@
-export function checkIdentifier(compiledCodePosition, syntaxErrors,semanticErrors,variablesTable){
+export function checkIdentifier(compiledCodePosition, syntaxErrors,semanticErrors,variablesTable,variableType){
 	if(compiledCodePosition.token !=='IDENTIFIER'){
 		syntaxErrors.push({ 
 			token: compiledCodePosition.token,
@@ -17,8 +17,14 @@ export function checkIdentifier(compiledCodePosition, syntaxErrors,semanticError
 				line: compiledCodePosition.line,
 				column: compiledCodePosition.column,
 			});
-		}else variablesTable.push(compiledCodePosition);
-     }else variablesTable.push(compiledCodePosition);
+		}else variablesTable.push({
+			...compiledCodePosition, 
+			type: variableType,
+		  });
+     }else variablesTable.push({
+		...compiledCodePosition, 
+		type:  variableType,
+	  });
     } 
 
 }

@@ -13,10 +13,8 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
 
     return compiledCode.length-1;
   } else {
-    console.log("logBegin",compiledCode[lastPosition].token );
     while (compiledCode[lastPosition].token !== 'END' && lastPosition < compiledCode.length ) {
       lastPosition = analyzer(lastPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors);
-      console.log("logBeginWhile",compiledCode[lastPosition].token );
     }
 
     if (compiledCode[lastPosition].token !== 'END') {
@@ -29,7 +27,6 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
     }
 
     lastPosition++;
-    console.log("logBeginIf",compiledCode[lastPosition].token );
     if (compiledCode[lastPosition].token !== 'SEMICOLON'&& compiledCode[lastPosition].token !== 'DOT') {
       syntaxErrors.push({ 
         token: compiledCode[lastPosition].token,
@@ -41,11 +38,6 @@ export function begin(firstPosition, compiledCode, variablesTable, syntaxErrors,
     if(compiledCode[lastPosition].token !== 'DOT'){
       lastPosition++;
     }
-    
-
     return lastPosition;
- 
-    
-  
   }
 }
