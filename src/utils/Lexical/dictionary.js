@@ -1,6 +1,9 @@
 export const dictionary = {
   NUM: "NUMERO NATURAL",
   FLOAT: "NUMERO REAL",
+
+  TRUE: "VERDADEIRO",
+  FALSE: "FALSO",
   
   SUM: "OPERADOR SOMA",
   MINUS: "OPERADOR SUBTRACAO",

@@ -130,7 +130,7 @@ header {
 }
 
 .invisible {
-  right: -1920px;
+  right: -50%;
   transition: all 0.4s;
 }
 
@@ -142,7 +142,7 @@ header {
 .aside-container {
   position: fixed;
   top: 77px;
-  width: 74%;
+  width: 50%;
   background-color: var(--background);
   padding: 20px 40px;
   border-radius: 4px;

@@ -1,10 +1,10 @@
 // import { useCompile } from "../../context/Compile";
-import { simpleExpression } from "./simpleExpression";
+import { expressions } from "../Semantic/expressions";
 
-export function expression(firstPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors) {
-  let newSyntaxErrors = [];
-  let newSemanticErrors = [];
+export function expression(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors) {
   let lastPosition = firstPosition;
+
+  expressions(lastPosition, compiledCode, variablesTable, semanticErrors);
 
   let possibleVariables = ['IDENTIFIER', 'FLOAT', 'NUM', 'BOOL'];
   let relation = ['EQUAL', 'DIFFERENT', 'SMALLER', 'SMALLER_OR_EQUAL', 'BIGGER_OR_EQUAL','BIGGER'];

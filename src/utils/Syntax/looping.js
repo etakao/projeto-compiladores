@@ -1,21 +1,21 @@
 import { compareSyntaxToken } from "../Functions/compareSyntaxToken";
 import { dictionary } from "../Lexical";
-export function looping(firstPosition, compiledCode, variablesTable, setVariablesTable, syntaxErrors, setSyntaxErrors, semanticErrors, setSemanticErrors){
-  let newSyntaxErrors = [];
-  let newSemanticErrors = [];
+
+export function looping(firstPosition, compiledCode, variablesTable, syntaxErrors, semanticErrors){
   let countInstruction =0;
   let verifyInstruction = ['ABRE PARENTESES', 'IDENTIFICADOR', 'EXPRESSÃO SIMPLES','IDENTIFICADOR OU VALOR','FECHA PARENTESES'];
   let lastPosition = firstPosition+1 ;
+
   while (compiledCode[lastPosition].token !== 'CLOSE_PARENTHESIS'&& lastPosition< compiledCode.length-1 ){
     switch(countInstruction){
       case 0:
-       compareSyntaxToken(compiledCode[lastPosition],'OPEN_PARENTHESIS',newSyntaxErrors)
+       compareSyntaxToken(compiledCode[lastPosition],'OPEN_PARENTHESIS',syntaxErrors)
        countInstruction++ 
        break;
       case 1:
-        if(compareSyntaxToken(compiledCode[lastPosition],'IDENTIFIER',newSyntaxErrors)){
+        if(compareSyntaxToken(compiledCode[lastPosition],'IDENTIFIER',syntaxErrors)){
           if(variablesTable.find(identify => { identify.value === compiledCode[lastPosition].value }) === undefined){
-+            newSemanticErrors.push({ 
++            semanticErrors.push({ 
               token: compiledCode[lastPosition].token,
               error: "IDENTIFICADOR NAO DECLARADO",
               line: compiledCode[lastPosition].line,
@@ -26,16 +26,16 @@ export function looping(firstPosition, compiledCode, variablesTable, setVariable
         }
         break;
       case 2:
-        compareSyntaxToken(compiledCode[lastPosition],'SIMPLE_EXPRESSION',newSyntaxErrors)
+        compareSyntaxToken(compiledCode[lastPosition],'SIMPLE_EXPRESSION',syntaxErrors)
           countInstruction++;
         
         break;
       case 3:
-        compareSyntaxToken(compiledCode[lastPosition],'IDENTIFIER_VALUE',newSyntaxErrors)
+        compareSyntaxToken(compiledCode[lastPosition],'IDENTIFIER_VALUE',syntaxErrors)
           countInstruction++;     
         break;
       default:
-        newSyntaxErrors.push({ 
+        syntaxErrors.push({ 
           token: compiledCode[lastPosition].token,
           error: "CARACTERE EM EXCESSO",
           line: compiledCode[lastPosition].line,
@@ -47,7 +47,7 @@ export function looping(firstPosition, compiledCode, variablesTable, setVariable
   }
   if(countInstruction < verifyInstruction.length-1){
     while(countInstruction< verifyInstruction.length ){
-       newSyntaxErrors.push({ 
+       syntaxErrors.push({ 
               token: verifyInstruction[countInstruction],
               error: `ESTA FALTANDO UM ${verifyInstruction[countInstruction]}`,
               line: compiledCode[lastPosition].line,
@@ -56,8 +56,6 @@ export function looping(firstPosition, compiledCode, variablesTable, setVariable
       countInstruction ++;
     }
   }
-  setSyntaxErrors([...syntaxErrors, ...newSyntaxErrors]);
-	setSemanticErrors([...semanticErrors, ...newSemanticErrors]);
-	console.log(" syntax errors: ", newSyntaxErrors, "semantic errors: ", newSemanticErrors);
+	console.log(" syntax errors: ", syntaxErrors, "semantic errors: ", semanticErrors);
 	return lastPosition;
 }

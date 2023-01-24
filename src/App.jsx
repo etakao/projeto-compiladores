@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { ToastContainer, toast } from 'react-toastify';
 import lexr from 'lexr';
@@ -10,24 +10,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // IMPORT ALL TOKENS, KEYWORDS, ERRORS, TYPES
 import { dictionary, tokens, keywords, errors, types } from './utils/Lexical';
-import { useCompile } from './context/Compile';
 import { analyzer } from './utils/Syntax/analyzer';
 
 function App() {
-  // const { 
-  //   compiledCode,
-  //   updateCompiledCode,
-  //   variablesTable,
-  //   updateVariablesTable,
-  //   syntaxErrors,
-  //   updateSyntaxErrors,
-  //   semanticErrors, 
-  //   updateSemanticErrors 
-  // } = useCompile();
-
   // program teste; int a; boolean b; procedure proc(var c : int); begin a := 12 if (a>12) end .
 
-  const [editorText, setEditorText] = useState("a := 12;");
+  const [editorText, setEditorText] = useState("program prog; int a; a := false .");
   const [compiledCode, setCompiledCode] = useState([]);
   const [variablesTable, setVariablesTable] = useState([]);
   const [syntaxErrors, setSyntaxErrors] = useState([]);
@@ -48,12 +36,11 @@ function App() {
   tokenizer.addIgnoreSet(["WHITESPACE"]);
 
   function handleSubmit() {
-    setVariablesTable([]);
-    setSyntaxErrors([]);
-    setSemanticErrors([]);
-
-    let editorTextLines = editorText.split("\r\n");
+    let editorTextLines = editorText.split("\n");
     let compiledCodeLines = [];
+    let updatedVariablesTable = [];
+    let updatedSyntaxErrors = [];
+    let updatedSemanticErrors = [];
 
     editorTextLines.forEach((line, lineIndex) => {
       const response = tokenizer.tokenize(line);
@@ -67,7 +54,12 @@ function App() {
 
     //updateCompiledCode(compiledCodeLines);
     setCompiledCode(compiledCodeLines);
-    analyzer(0, compiledCodeLines, [], setVariablesTable, [], setSyntaxErrors, [], setSemanticErrors);
+    
+    analyzer(0, compiledCodeLines, updatedVariablesTable, updatedSyntaxErrors, updatedSemanticErrors);
+
+    setVariablesTable(updatedVariablesTable);
+    setSyntaxErrors(updatedSyntaxErrors);
+    setSemanticErrors(updatedSemanticErrors);
   }
 
   function handleEditorChange(value, event) {
@@ -234,12 +226,39 @@ function App() {
             </table> 
           </div>
 
+          <div className={activeTab === "semantic" ? "active-table" : "inactive-table"}>
+            <table>
+              <thead>
+                <tr>
+                  <th>LINHA</th>
+                  <th>ERRO</th>
+                </tr>
+              </thead>
+              <tbody>
+                {semanticErrors.length ? (
+                  semanticErrors.map((data, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{data.line}</td>
+                        <td>{data.error}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td>Nenhum erro encontrado.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table> 
+          </div>
+
           <div className={activeTab === "variables" ? "active-table" : "inactive-table"}>
             <table>
               <thead>
                 <tr>
-                  <th>LEXEMA</th>
-                  <th>TOKEN</th>
+                  <th>TIPO</th>
+                  <th>VALOR</th>
                   <th>LINHA</th>
                   <th>COLUNA</th>
                 </tr>
@@ -248,8 +267,8 @@ function App() {
                 {variablesTable.map((data, index) => {
                   return (
                     <tr key={index}>
+                      <td>{data.type}</td>
                       <td>{data.value}</td>
-                      <td>{dictionary[data.token]}</td>
                       <td>{data.line}</td>
                       <td>{data.column}</td>
                     </tr>

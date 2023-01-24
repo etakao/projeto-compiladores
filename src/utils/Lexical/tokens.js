@@ -1,9 +1,11 @@
 export const tokens = {
-  // ASSIGN: /(:=)/,
+  ASSIGN: /(:=)/,
   COMMENT_LINE: /([/]{2}[^\n]*\n)/,
   DOT: /(\.)/,
   NUM: /[0-9]{1,8}/,
   FLOAT: /[0-9]{1,8}\.[0-9]{1,5}/,
+  FALSE: /(false)/,
+  TRUE: /(true)/,
   SUM: /[+]/,
   MINUS: /[-]/,
   MULTIPLY: /[*]/,
